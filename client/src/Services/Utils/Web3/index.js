@@ -1,6 +1,18 @@
 import Web3 from "web3";
+import { Provider } from "../../constants";
 
-const Provider = Web3.givenProvider;
+const connectMetamask = async () => {
+ return await window.ethereum.request({ method: 'eth_requestAccounts' })
+}
+
+const checkLoggedInAccounts = async () => {
+ // check if ethereum network is available on browser
+ if (!window.ethereum && !window.ethereum.isMetaMask)
+  return toast.warn('Please install metamask wallet', { toastId: '4' });
+
+ return window.ethereum.selectedAddress;
+}
+
 
 const getAllAccounts = async () => {
  // blockchain network connection
@@ -24,22 +36,28 @@ const getBlockNumber = async () => {
 }
 const getBlock = async () => {
  const block = await new Web3(Provider).eth.getBlock(await getBlockNumber());
- console.log(block)
- return blockNumber;
-}
-// connect to metamask wallet network
-const connectMetamask = async () => {
- return await window.ethereum.request({ method: 'eth_requestAccounts' })
+ // console.log(block)
+ return block;
 }
 
-// connect to blockchain network
-const checkLoggedInAccounts = async () => {
- // check if ethereum network is available on browser
- if (!window.ethereum && !window.ethereum.isMetaMask)
-  return toast.warn('Please install metamask wallet', { toastId: '4' });
-
- return window.ethereum.selectedAddress;
+const getTransactions = async () => {
+ const block = await getBlock();
+ console.log(block.transactions)
+ return transactions;
 }
 
+const getNodeInfo = async () => {
+ const info = await new Web3(Provider).eth.getNodeInfo();
+ console.log(info)
+}
 
-export { getAllAccounts, connectMetamask, checkLoggedInAccounts, getBalance, getBlockNumber, getBlock };
+export {
+ getAllAccounts,
+ connectMetamask,
+ checkLoggedInAccounts,
+ getBalance,
+ getBlockNumber,
+ getBlock,
+ getTransactions,
+ getNodeInfo
+};

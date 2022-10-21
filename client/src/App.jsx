@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
-import { getAllAccounts, connectMetamask, checkLoggedInAccounts, getBlockNumber, getBalance, getBlock } from './Services/Utils/Web3/index';
+import { getAllAccounts, connectMetamask, checkLoggedInAccounts, getBlockNumber, getBalance, getBlock, getTransactions, getNodeInfo } from './Services/Utils/Web3/index';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -41,6 +41,10 @@ function App() {
       </button>
       <button
         className='btn btn-info text-light rounded-1'
+        onClick={getAllAccounts}
+      >Check All accounts</button>
+      <button
+        className='btn btn-info text-light rounded-1'
         onClick={getBalance}
       >Check Balance</button>
       <button
@@ -51,6 +55,14 @@ function App() {
         className='btn btn-info text-light rounded-1'
         onClick={getBlock}
       >Get Block</button>
+      <button
+        className='btn btn-info text-light rounded-1'
+        onClick={getTransactions}
+      >Get All Transaction</button>
+      <button
+        className='btn btn-info text-light rounded-1'
+        onClick={getNodeInfo}
+      >Get Node info</button>
       <ToastContainer />
     </div>
   )
