@@ -1,3 +1,7 @@
 .App {
   height: 100vh;
 }
+
+.App button {
+  margin-bottom: 20px;
+}
