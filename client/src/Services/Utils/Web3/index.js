@@ -1,5 +1,4 @@
-import Web3 from "web3";
-import { Provider } from "../../constants";
+import { web3, ACCOUNT_ADDRESS, SmartContract } from "../../constants/index";
 
 const connectMetamask = async () => {
  return await window.ethereum.request({ method: 'eth_requestAccounts' })
@@ -16,7 +15,6 @@ const checkLoggedInAccounts = async () => {
 
 const getAllAccounts = async () => {
  // blockchain network connection
- const web3 = new Web3(Provider || 'http://localhost:8545');
  const accounts = await web3.eth.getAccounts();
  console.log(accounts);
  return accounts;
@@ -24,18 +22,18 @@ const getAllAccounts = async () => {
 
 
 const getBalance = async () => {
- let balance = await new Web3(Provider).eth.getBalance(Provider.selectedAddress);
+ let balance = await web3.eth.getBalance(ACCOUNT_ADDRESS);
  console.log(balance)
  return balance;
 }
 
 const getBlockNumber = async () => {
- const blockNumber = await new Web3(Provider).eth.getBlockNumber();
+ const blockNumber = await web3.eth.getBlockNumber();
  console.log(blockNumber)
  return blockNumber;
 }
 const getBlock = async () => {
- const block = await new Web3(Provider).eth.getBlock(await getBlockNumber());
+ const block = await web3.eth.getBlock(await getBlockNumber());
  // console.log(block)
  return block;
 }
@@ -47,9 +45,36 @@ const getTransactions = async () => {
 }
 
 const getNodeInfo = async () => {
- const info = await new Web3(Provider).eth.getNodeInfo();
+ const info = await web3.eth.getNodeInfo();
  console.log(info)
 }
+
+
+// Banking transaction
+const addNewAccount = async (name, amount, contact_address, email) => {
+ const res = await SmartContract.methods.addNewAccount(ACCOUNT_ADDRESS, name, amount, contact_address, email).send({ from: ACCOUNT_ADDRESS });
+ console.log(res)
+}
+
+const getAccounts = async () => {
+ const res = await SmartContract.methods.getAccounts().call();
+ console.log(res)
+}
+const getAccountDetails = async () => {
+ const res = await SmartContract.methods.getAccountDetails(ACCOUNT_ADDRESS).call();
+ console.log(res)
+}
+
+const deposit = async (amnt) => {
+ const res = await SmartContract.methods.deposit(ACCOUNT_ADDRESS, amnt).send({ from: ACCOUNT_ADDRESS });
+ console.log(res)
+}
+
+const withdraw = async (amnt) => {
+ const res = await SmartContract.methods.withdraw(ACCOUNT_ADDRESS, amnt).send({ from: ACCOUNT_ADDRESS });
+ console.log(res)
+}
+
 
 export {
  getAllAccounts,
@@ -59,5 +84,10 @@ export {
  getBlockNumber,
  getBlock,
  getTransactions,
- getNodeInfo
+ getNodeInfo,
+ addNewAccount,
+ getAccounts,
+ getAccountDetails,
+ deposit,
+ withdraw
 };
